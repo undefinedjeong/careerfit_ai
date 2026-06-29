@@ -45,6 +45,10 @@ dist/
 Thumbs.db
 
 
-# 문서들
+# 문서
 
 docs/
+
+# 에이전트
+
+.cursor
