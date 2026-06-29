@@ -43,3 +43,8 @@ dist/
 .DS_Store
 
 Thumbs.db
+
+
+# 문서들
+
+docs/
