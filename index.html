@@ -1,20 +1,26 @@
 <!DOCTYPE html>
     <head>
         <title>CareerFit AI</title>
+        <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     </head>
 
     <body>
         <div>
             <h1 style="text-align: center;">CareerFit AI</h1>
-            <p style="text-align: center;">CareerFit AI is a platform that helps you find your dream job.</p>
+            <p style="text-align: center;">
+                2026학년도 여름계절학기 인공지능 에이전트 개발반
+                <br>
+                컴퓨터과학부 2025920046 정경훈
+            </p>
         </div>
-        <div style="max-width: 400px; margin: 40px auto; padding: 24px 32px; background: #f5f7fa; border-radius: 18px; box-shadow: 0 3px 16px rgba(0,0,0,0.08); border: 1px solid #e0e0e0;">
-            <h2 style="margin-top: 0; text-align:center; color: #2557a7;">Features</h2>
-            <ul style="list-style: disc inside; padding-left: 0; color: #333; font-size: 1.07em;">
-                <li>Find your dream job</li>
-                <li>Get personalized recommendations</li>
-            </ul>
-            <a href="README.md">README.md</a>
-        </div>
+        <div id="content" style="max-width: 80%; margin: 40px auto; padding: 24px 32px; background: #f5f7fa; border-radius: 18px; box-shadow: 0 3px 16px rgba(0,0,0,0.08); border: 1px solid #e0e0e0;"></div>
     </body>
+
+    <script>
+        fetch("README.md")
+        .then(response => response.text())
+        .then(text => {
+            document.getElementById("content").innerHTML = marked.parse(text);
+        });
+    </script>
 </html>
