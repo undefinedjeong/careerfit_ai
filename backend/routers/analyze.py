@@ -3,6 +3,7 @@
 from fastapi import APIRouter
 from pydantic import BaseModel
 from typing import List
+
 router = APIRouter()
 
 # 요청 본문(Request Body) 모델
@@ -20,8 +21,6 @@ class AnalyzeResponse(BaseModel):
     answer: str         # AI 분석 결과 텍스트
     sources: List[dict]     # 답변 근거 데이터 목록
 
-
-
 @router.post("/analyze", response_model=AnalyzeResponse, tags=["Analyze"])
 
 def analyze_career(request: AnalyzeRequest):
@@ -32,7 +31,6 @@ def analyze_career(request: AnalyzeRequest):
     '''
 
     # 임시 목업 응답: 실습 8에서 실제 Gemini + RAG 응답으로 교체한다
-
     mock_answer = (
         f"{request.major} 학생으로서 {request.job_type} 직무에 지원하려면, "
         f"현재 보유하신 {', '.join(request.skills)} 역량을 바탕으로 "
