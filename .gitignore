@@ -46,10 +46,10 @@ dist/
 Thumbs.db
 
 
-# 문서
+# 기타
 
 docs/
 
-# 에이전트
-
 .cursor/
+
+*.example
