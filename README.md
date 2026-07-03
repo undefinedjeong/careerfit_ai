@@ -14,7 +14,7 @@ CareerFit AI는 채용공고와 공모전 데이터를 분석하여 사용자에
 | 영역 | 기술 |
 |---|---|
 | 백엔드 | Python, FastAPI |
-| AI API | Gemini 2.5 Flash-Lite |
+| AI API | Gemini 3.1 Flash-Lite |
 | 데이터 | Pandas, SQLite, ChromaDB |
 | 프론트엔드 | React, Vite |
 | 실행 환경 | Docker |

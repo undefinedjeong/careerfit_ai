@@ -69,34 +69,39 @@ def get_llm_response(query: str, context_docs: list) -> dict:
                 {"title": "mock 데이터", "content": "mock 출처 내용"}
             ]
         }
+    
+    return performInteraction(client, query, context_docs)
 
-    interaction = client.interactions.create(
-        model = os.getenv("LLM_MODEL"),
-        input = build_prompt(query, [])
-    )
-
+def performInteraction(client, query, context_docs, fallback=false):
     try:
+        interaction = client.interactions.create(
+            model = os.getenv("LLM_MODEL") if not fallback else os.getenv("FALLBACK_LLM_MODEL"),
+            input = build_prompt(query, [])
+        )
+
         return {
             "answer": interaction.output_text,
             "sources": context_docs if context_docs else []
         }
 
     except Exception as e:
-        # API 오류 발생 시 mock 응답으로 폴백
         error_msg = str(e)
 
         # 429: 한도 초과 안내
         if "429" in error_msg or "RESOURCE_EXHAUSTED" in error_msg:
-            return {
-                "answer": (
-                    "[API 한도 초과] Gemini API 무료 한도에 도달했습니다. "
-                    ".env에서 MOCK_MODE=true 로 설정하고 실습을 계속하세요."
-                ),
-                "sources": []
-            }
+            if not fallback:
+                return performInteraction(fallback=True) #fallback mode로 다시 시도
+            else: #폴백까지 실패시 오류 출력
+                return {
+                    "answer": (
+                        "주 모델과 폴백 모델 모두 사용량 제한에 도달하였습니다."
+                        ".env에서 MOCK_MODE=true 로 설정하고 실습을 계속하세요."
+                    ),
+                    "sources": []
+                }
 
         # 그 외 오류
         return {
-            "answer": f"[오류 발생] {error_msg}. 강사에게 문의하거나 MOCK_MODE=true 로 전환하세요.",
+            "answer": f"[예기치 않은 오류 발생] {error_msg}. 강사에게 문의하거나 MOCK_MODE=true 로 전환하세요.",
             "sources": []
         }
