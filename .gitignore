@@ -27,6 +27,8 @@ backend/chroma_db/
 
 # 데이터베이스 파일
 
+data/
+
 *.db
 
 
