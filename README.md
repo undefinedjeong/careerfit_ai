@@ -101,8 +101,8 @@ carrerfit_ai/
   - [x] Mock Mode 환경변수 구성
 
 - **3일차**
-  - [ ] 채용공고 데이터 수집
-  - [ ] Pandas 전처리
+  - [x] 채용공고 데이터 수집
+  - [x] Pandas 전처리
   - [ ] SQLite 저장
   - [ ] ChromaDB 구축
 

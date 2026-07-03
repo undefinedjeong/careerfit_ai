@@ -2,8 +2,8 @@
 
 import os
 from dotenv import load_dotenv
-
 from google import genai
+from services import ollama_service
 
 # .env 파일에서 환경변수를 읽어온다
 load_dotenv()
@@ -85,15 +85,24 @@ FALLBACK_MODELS = {
 }
 def performInteraction(client, query, context_docs, fallback_depth=0):
     try:
-        interaction = client.interactions.create(
-            model = FALLBACK_MODELS[fallback_depth],
-            input = build_prompt(query, [])
-        )
+        if fallback_depth <= 1:
+            interaction = client.interactions.create(
+                model = FALLBACK_MODELS[fallback_depth],
+                input = build_prompt(query, [])
+            )
 
-        return {
-            "answer": interaction.output_text,
-            "sources": context_docs if context_docs else []
-        }
+            return {
+                "answer": interaction.output_text,
+                "sources": context_docs if context_docs else []
+            }
+
+        else:
+            return {
+                "answer": ollama_service.get_ollama_response(
+                    prompt = build_prompt(query, [])
+                ),
+                "sources": []
+            }
 
     except Exception as e:
         error_msg = str(e)
