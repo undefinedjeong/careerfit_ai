@@ -9,7 +9,6 @@
 
 CareerFit AI는 채용공고와 공모전 데이터를 분석하여 사용자에게 필요한 역량과 포트폴리오 방향을 AI가 제안하는 프로젝트입니다.
 
-
 ## 기술 스택
 
 | 영역 | 기술 |
@@ -19,6 +18,16 @@ CareerFit AI는 채용공고와 공모전 데이터를 분석하여 사용자에
 | 데이터 | Pandas, SQLite, ChromaDB |
 | 프론트엔드 | React, Vite |
 | 실행 환경 | Docker |
+
+## 사용 라이브러리
+| 라이브러리 | 버전 |│| 라이브러리 | 버전 |
+|---|---|---|---|---|
+|fastapi|0.115.5|│|uvicorn|0.32.1|
+|python-dotenv|1.0.1|│|google-generativeai|0.8.3|
+|pandas|2.2.3|│|chromadb|1.5.9|
+|pydantic|2.10.3|│|transformers[torch]|5.12.1|
+|huggingface-hub|1.21.0|│|google|3.0.0|
+|google.genai|2.10.0|│|||
 
 ## 프로젝트 구조
 
@@ -46,20 +55,15 @@ carrerfit_ai/
 └── README.md
 ```
 
-## 사용 라이브러리
-| 라이브러리 | 버전 |
-|---|---|
-|fastapi|0.115.5|
-|uvicorn|0.32.1|
-|python-dotenv|1.0.1|
-|google-generativeai|0.8.3|
-|pandas|2.2.3|
-|chromadb|1.5.9|
-|pydantic|2.10.3|
-|transformers[torch]|5.12.1|
-|huggingface-hub|1.21.0|
-|google|3.0.0|
-|google.genai|2.10.0|
+## 동작 흐름
+1. backend/routers/analyze.py의 analyze_career 함수에서 사용자로부터 전공, 스킬(역량), 희망 직무를 입력받는다.
+
+2. 입력받은 값을 LLM이 이해하기 쉬운 하나의 문자열로 변환한 뒤, get_llm_response 함수에 전달한다.
+
+3. backend/services/llm_service.py의 get_llm_response 함수는 google.genai 라이브러리를 사용한다.
+
+4. 해당 함수는 클라이언트를 생성한 후 client.interactions.create(model, input)을 호출해 Interaction을 생성하고, interaction.output_text에 담긴 결과를 반환한다.
+
 
 ## 진행 현황
 
