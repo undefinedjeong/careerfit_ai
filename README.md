@@ -14,7 +14,7 @@ CareerFit AI는 채용공고와 공모전 데이터를 분석하여 사용자에
 | 영역 | 기술 |
 |---|---|
 | 백엔드 | Python, FastAPI |
-| AI API | Gemini 3.1 Flash-Lite, Gamma 4 31B |
+| AI API | Gemini 3.1 Flash-Lite, Gemma 4 31B, (local) llama 3.2 3B |
 | 데이터 | Pandas, SQLite, ChromaDB |
 | 프론트엔드 | React, Vite |
 | 실행 환경 | Docker |
@@ -23,21 +23,22 @@ CareerFit AI는 채용공고와 공모전 데이터를 분석하여 사용자에
 | 역할 | 모델명 |
 |---|---|
 | 메인 모델 | Gemini 3.1 Flash-Lite |
-| 폴백 모델 | Gamma 4 31B|
+| 폴백 모델 | Gemma 4 31B|
+| 로컬 폴백 모델 | llama 3.2 3B |
 
 ### 왜 이 모델을 선택하였는가?
 
-> Gemini API에서 무료로 제공하는 사용량이 압도적으로 큼.
+> Gemini API에서 무료로 제공하는 사용량이 압도적으로 크고, Gemini 2.5 대비 성능도 좋음.
 
 | 모델명 | 분당 요청수 제한 | 일간 요청수 제한 | 분당 토큰수 제한 |
 |---|---|---|---|
 | Gemini 2.5 Flash Lite | 10 | 20 | 250K |
 | Gemini 2.5 Flash | 5 | 20 | 250K |
 | Gemini 3.1 Flash Lite | 15 | 500 | 250K |
-| Gamma 4 31B | 15 | 1,500 | 무제한
+| Gemma 4 31B | 15 | 1,500 | 무제한
 
 - 성능과 제공 사용량이 균형을 이루는 Gemini 3.1 Flash Lite를 **메인 모델**로 선택함.
-- 성능은 비교적 떨어지나 제공되는 사용량이 많아 안정적으로 서비스를 제공할 수 있는 Gamma 4 31B를 **폴백 모델**로 선택함.
+- 성능은 비교적 떨어지나 제공되는 사용량이 많아 안정적으로 서비스를 제공할 수 있는 Gemma 4 31B를 **폴백 모델**로 선택함.
 
 ## 사용 라이브러리
 | 라이브러리 | 버전 |│| 라이브러리 | 버전 |
