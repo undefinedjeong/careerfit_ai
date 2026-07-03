@@ -84,7 +84,7 @@ carrerfit_ai/
 
 4. 해당 함수는 클라이언트를 생성한 후 client.interactions.create(model, input)을 호출해 Interaction을 생성하고, interaction.output_text에 담긴 결과를 반환한다.
 
-5. LLM 텍스트 생성 과정에서 사용량 초과 오류 발생시 폴백 모델은 사용하여 다시 시도한다. 폴백 모델 사용량까지 초과하였다면 로컬 모델을 사용하여 답변한다.
+5. LLM 텍스트 생성 과정에서 사용량 초과 오류 발생시 폴백 모델을 사용하여 다시 시도한다. 폴백 모델 사용량까지 초과하였다면 로컬 모델을 사용하여 답변한다.
 
 
 ## 진행 현황
@@ -97,7 +97,7 @@ carrerfit_ai/
 - **2일차**
   - [x] FastAPI 서버 구축
   - [x] `/health`, `/jobs`, `/analyze` API 구현
-  - [x] Gemini 2.5 Flash-Lite API 연동
+  - [x] Gemini 3.1 Flash-Lite API 연동
   - [x] Mock Mode 환경변수 구성
 
 - **3일차**
