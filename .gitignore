@@ -27,9 +27,11 @@ backend/chroma_db/
 
 # 데이터베이스 파일
 
-data/
+*.csv
 
 *.db
+
+rag_documents.json
 
 
 

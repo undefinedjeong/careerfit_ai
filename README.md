@@ -103,7 +103,7 @@ carrerfit_ai/
 - **3일차**
   - [x] 채용공고 데이터 수집
   - [x] Pandas 전처리
-  - [ ] SQLite 저장
+  - [x] SQLite 저장
   - [ ] ChromaDB 구축
 
 - **4일차**
