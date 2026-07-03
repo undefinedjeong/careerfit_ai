@@ -72,10 +72,21 @@ def get_llm_response(query: str, context_docs: list) -> dict:
     
     return performInteraction(client, query, context_docs)
 
-def performInteraction(client, query, context_docs, fallback=False):
+'''
+fallback_depth
+0: 메인 모델(gemini 3.1 flash lite)
+1: 폴백 모델(gamma 4 31b)
+2: 로컬 폴백 모델(llama 3.2 3b)
+'''
+FALLBACK_MODELS = {
+    0: os.getenv("LLM_MODEL"),
+    1: os.getenv("FALLBACK_MODEL"),
+    2: os.getenv("LOCAL_FALLBACK_MODEL"),
+}
+def performInteraction(client, query, context_docs, fallback_depth=0):
     try:
         interaction = client.interactions.create(
-            model = os.getenv("LLM_MODEL") if not fallback else os.getenv("FALLBACK_LLM_MODEL"),
+            model = FALLBACK_MODELS[fallback_depth],
             input = build_prompt(query, [])
         )
 
@@ -89,12 +100,12 @@ def performInteraction(client, query, context_docs, fallback=False):
 
         # 429: 한도 초과 안내
         if "429" in error_msg or "RESOURCE_EXHAUSTED" in error_msg:
-            if not fallback:
-                return performInteraction(fallback=True) #fallback mode로 다시 시도
+            if fallback_depth != 2:
+                return performInteraction(client, query, context_docs, fallback_depth+1) #fallback mode로 다시 시도
             else: #폴백까지 실패시 오류 출력
                 return {
                     "answer": (
-                        "주 모델과 폴백 모델 모두 사용량 제한에 도달하였습니다."
+                        "LLM 모델 사용이 불가능합니다."
                         ".env에서 MOCK_MODE=true 로 설정하고 실습을 계속하세요."
                     ),
                     "sources": []
