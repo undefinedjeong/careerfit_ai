@@ -55,7 +55,7 @@ CareerFit AI는 채용공고와 공모전 데이터를 분석하여 사용자에
 ```text
 carrerfit_ai/
 ├── backend/
-│   ├── data/
+│   ├── data/ (ignored)
 │   ├── routers/
 │   │   ├── analayze.py
 │   │   ├── health.py
@@ -64,16 +64,12 @@ carrerfit_ai/
 │   │   ├── __init__.py 
 │   │   └── llm_service.py
 │   ├── main.py
-│   ├── .env (masked)
+│   ├── .env (ignored)
 │   └── requirements.txt
 ├── frontend/
 ├── img/
 ├── data/
-├── docs/ (masked)
-│   ├── CHECKLIST.md
-│   ├── EVAL_QUESTIONS.md
-│   ├── PROJECT_PLAN.md
-│   └── PROMPTS.md
+├── docs/ (ignored)
 ├── .gitignore
 ├── index.html
 └── README.md
