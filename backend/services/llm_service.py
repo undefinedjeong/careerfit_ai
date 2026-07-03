@@ -72,7 +72,7 @@ def get_llm_response(query: str, context_docs: list) -> dict:
     
     return performInteraction(client, query, context_docs)
 
-def performInteraction(client, query, context_docs, fallback=false):
+def performInteraction(client, query, context_docs, fallback=False):
     try:
         interaction = client.interactions.create(
             model = os.getenv("LLM_MODEL") if not fallback else os.getenv("FALLBACK_LLM_MODEL"),
