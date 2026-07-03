@@ -111,14 +111,6 @@ def performInteraction(client, query, context_docs, fallback_depth=0):
         if "429" in error_msg or "RESOURCE_EXHAUSTED" in error_msg:
             if fallback_depth != 2:
                 return performInteraction(client, query, context_docs, fallback_depth+1) #fallback mode로 다시 시도
-            else: #폴백까지 실패시 오류 출력
-                return {
-                    "answer": (
-                        "LLM 모델 사용이 불가능합니다."
-                        ".env에서 MOCK_MODE=true 로 설정하고 실습을 계속하세요."
-                    ),
-                    "sources": []
-                }
 
         # 그 외 오류
         return {
