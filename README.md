@@ -23,7 +23,7 @@ CareerFit AI는 채용공고와 공모전 데이터를 분석하여 사용자에
 
 - Frontend의 SourceCard.jsx에 필수 스킬 부분이 출력되지 않음 (해결: DB 수정)
 ```text
-chromadb 생성시 metadata 내에 required_skills가 포함되지 않아 analyze.py -> llm_services로 이어지는 백엔드 구조에서 SourceCard.jsx로 required_skills를 공백으로 전달함.
+문제: chromadb 생성시 metadata 내에 required_skills가 포함되지 않음.
 
 해결: preprocess.py에서 json 생성시 metadata 내에 required_skills 포함하게 수정한 후, chromadb 재생성
 ```
@@ -60,7 +60,7 @@ chromadb 생성시 metadata 내에 required_skills가 포함되지 않아 analyz
 - 성능은 비교적 떨어지나 제공되는 사용량이 많아 안정적으로 서비스를 제공할 수 있는 Gemma 4 31B를 **폴백 모델**로 선택함.
 - 상세 평가 사항은 [MODEL_BENCHMARK.md](./docs/MODEL_BENCHMARK.md) 참고
 
-## 사용 라이브러리
+## 사용 라이브러리 (백엔드)
 | 라이브러리 | 버전 |│| 라이브러리 | 버전 |
 |---|---|---|---|---|
 |fastapi|0.115.5|│|uvicorn|0.32.1|
@@ -75,7 +75,8 @@ chromadb 생성시 metadata 내에 required_skills가 포함되지 않아 analyz
 ```text
 carrerfit_ai/
 ├── backend/
-│   ├── data/ (ignored)
+│   ├── data/
+│   │   └── carrerfit.db
 │   ├── routers/
 │   │   ├── analayze.py
 │   │   ├── health.py
@@ -87,15 +88,21 @@ carrerfit_ai/
 │   ├── .env (ignored)
 │   └── requirements.txt
 ├── frontend/
-├── img/
+│   ├── src
+│   │   ├── InputForm.jsx
+│   │   ├── ResultCard.jsx
+│   │   └── SourceCard.jsx
+│   ├── App.css
+│   ├── App.jsx
+│   ├── index.css
+│   └── main.jsx
 ├── data/
-├── docs/ (ignored)
+├── docs/
 ├── .gitignore
-├── index.html
 └── README.md
 ```
 
-## 동작 흐름
+## 동작 흐름(백엔드)
 1. backend/routers/analyze.py의 analyze_career 함수에서 사용자로부터 전공, 스킬(역량), 희망 직무를 입력받는다.
 
 2. 입력받은 값을 LLM이 이해하기 쉬운 하나의 문자열로 변환한 뒤, get_llm_response 함수에 전달한다.
@@ -106,7 +113,25 @@ carrerfit_ai/
 
 5. LLM 텍스트 생성 과정에서 사용량 초과 오류 발생시 폴백 모델을 사용하여 다시 시도한다. 폴백 모델 사용량까지 초과하였다면 로컬 모델을 사용하여 답변한다.
 
+## 사용법
+### 백엔드 서버
+```bash
+cd backend
+venv\Scripts\Activate.ps1 # venv 실행
+uvicorn main:app --reload --port 8000
+```
+```
+https://127.0.0.1:8000
+https://127.0.0.1:8000/docs
+```
 
+### 프론트엔드 서버
+```bash
+npm run dev
+```
+```
+https://127.0.0.1:5173
+```
 ## 진행 현황
 
 - **1일차**
