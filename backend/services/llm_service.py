@@ -12,36 +12,42 @@ load_dotenv()
 MOCK_MODE = os.getenv("MOCK_MODE", "false").lower() == "true"
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 
-def build_prompt(query: str, context_docs: list) -> str:
+def build_rag_prompt(query: str, context_docs: list) -> str:
     """
-    사용자 질문과 RAG 문서를 결합해 Gemini에게 보낼 프롬프트를 만든다.
-    요리 비유: 외부 셰프에게 주문서를 작성하는 단계
+    사용자 질문 + RAG 검색 문서 → Gemini 프롬프트 구성
+    요리 비유: 셰프(Gemini)에게 레시피 카드(context_docs)를 건네며 요청합니다.
     """
-    # 3일차에 context_docs가 실제 ChromaDB 검색 결과로 채워진다
-    # 지금은 빈 컨텍스트로 테스트한다
-    context_text = "\n".join([
-        f"- {doc.get('content', '')}" for doc in context_docs
-    ]) if context_docs else "관련 데이터 없음 (3일차에 추가 예정)"
+    if context_docs:
+        context_text = "\n".join([
+            f"[공고 {i+1}]\n{doc['text']}\n출처: {doc['metadata'].get('company', '')} — {doc['metadata'].get('title', '')}"
+            for i, doc in enumerate(context_docs)
+        ])
+        context_section = f"""
+            [참고 데이터 — 실제 취업·공모전 공고]
+            {context_text}
 
-    prompt = f"""
-    당신은 취업·공모전 전문 커리어 코치입니다.
-    다음 지원자 정보와 참고 데이터를 바탕으로 맞춤형 조언을 한국어로 제공하세요.
+            위 데이터를 반드시 근거로 사용해 답변하세요.
+            답변에서 어떤 공고를 참고했는지 명시하세요.
+        """
 
-    [지원자 정보]
-    {query}
+    else:
+        context_section = "[참고 데이터 없음 — 일반적인 조언을 제공합니다]"
 
-    [참고 데이터]
-    {context_text}
+    return f"""당신은 취업·공모전 전문 커리어 코치입니다.
+        다음 지원자 정보와 참고 데이터를 바탕으로 맞춤형 조언을 한국어로 제공하세요.
 
-    [답변 형식]
-    1. 현재 역량 평가 (2~3문장)
-    2. 부족한 역량 및 준비 방향 (3가지 이내)
-    3. 추천 프로젝트 또는 공모전 (1~2개)
+        [지원자 정보]
+        {query}
 
-    출처 데이터가 없는 경우 일반적인 커리어 조언을 제공하되,
-    데이터가 있다면 반드시 그 데이터를 근거로 답변하세요.
+        {context_section}
+
+        [답변 형식]
+        1. 현재 역량 평가 (2문장 이내)
+        2. 추천 공고 또는 공모전 (1~2개, 이유 포함)
+        3. 부족한 역량 및 준비 방향 (3가지 이내)
+
+        간결하고 실용적으로 작성하세요.
     """
-    return prompt.strip()
 
 def get_llm_response(query: str, context_docs: list) -> dict:
     """
@@ -66,11 +72,22 @@ def get_llm_response(query: str, context_docs: list) -> dict:
                 "MOCK_MODE=false 로 설정하면 받을 수 있습니다."
             ),
             "sources": [
-                {"title": "mock 데이터", "content": "mock 출처 내용"}
+                { "company": doc["metadata"].get("company", ""), 
+                    "title": doc["metadata"].get("title", ""), 
+                    "required_skills": ""
+                } for doc in context_docs
             ]
         }
     
-    return performInteraction(client, query, context_docs)
+    sources = [{ "company": doc["metadata"].get("company", ""), 
+                "title": doc["metadata"].get("title", ""), 
+                "required_skills": doc["metadata"].get("required_skills", ""), 
+                "distance": doc.get("distance", 0)
+            } for doc in context_docs
+            ]
+
+    
+    return performInteraction(client, query, context_docs, sources)
 
 '''
 fallback_depth
@@ -84,25 +101,25 @@ FALLBACK_MODELS = {
     2: os.getenv("LOCAL_FALLBACK_MODEL"),
 }
 
-def performInteraction(client, query, context_docs, fallback_depth=0):
+def performInteraction(client, query, context_docs, sources, fallback_depth=0):
     try:
         if fallback_depth <= 1:
             interaction = client.interactions.create(
                 model = FALLBACK_MODELS[fallback_depth],
-                input = build_prompt(query, [])
+                input = build_rag_prompt(query, context_docs)
             )
 
             return {
                 "answer": interaction.output_text,
-                "sources": context_docs if context_docs else []
+                "sources": sources
             }
 
         else:
             return {
                 "answer": ollama_service.get_ollama_response(
-                    prompt = build_prompt(query, [])
+                    prompt = build_rag_prompt(query, context_docs)
                 ),
-                "sources": []
+                "sources": sources
             }
 
     except Exception as e:
@@ -111,7 +128,7 @@ def performInteraction(client, query, context_docs, fallback_depth=0):
         # 429: 한도 초과 안내
         if "429" in error_msg or "RESOURCE_EXHAUSTED" in error_msg:
             if fallback_depth != 2:
-                return performInteraction(client, query, context_docs, fallback_depth+1) #fallback mode로 다시 시도
+                return performInteraction(client, query, context_docs, sources, fallback_depth+1) #fallback mode로 다시 시도
 
         # 그 외 오류
         return {
