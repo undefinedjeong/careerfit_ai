@@ -15,12 +15,18 @@ CareerFit AI는 채용공고와 공모전 데이터를 분석하여 사용자에
 - google.genai에서 제공하는 Interaction 객체 기반 LLM 상호작용
 - 선순위 모델 사용 불가시 자동으로 후순위 모델로 폴백 시도 
 
-### 의문점:
+### 문제점/의문점:
 
 - 지금 방식으로는 프롬프트 인젝션 공격이 가능하지 않을까? 이걸 해결하려면 어떻게 해야할까?
 
-### 해결된 의문점:
-- :(
+### 해결된 문제점/의문점:
+
+- Frontend의 SourceCard.jsx에 필수 스킬 부분이 출력되지 않음 (해결: DB 수정)
+```text
+chromadb 생성시 metadata 내에 required_skills가 포함되지 않아 analyze.py -> llm_services로 이어지는 백엔드 구조에서 SourceCard.jsx로 required_skills를 공백으로 전달함.
+
+해결: preprocess.py에서 json 생성시 metadata 내에 required_skills 포함하게 수정한 후, chromadb 재생성
+```
 
 ## 기술 스택
 
