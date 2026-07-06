@@ -36,7 +36,7 @@ CareerFit AI는 채용공고와 공모전 데이터를 분석하여 사용자에
 | 역할 | 모델명 |
 |---|---|
 | 메인 모델 | Gemini 3.1 Flash-Lite |
-| 폴백 모델 | Gemma 4 31B|
+| 폴백 모델 | Gemma 4 31B |
 | 로컬 폴백 모델 | llama 3.2 3B |
 
 ### 왜 이 모델을 선택하였는가?
@@ -52,6 +52,7 @@ CareerFit AI는 채용공고와 공모전 데이터를 분석하여 사용자에
 
 - 성능과 제공 사용량이 균형을 이루는 Gemini 3.1 Flash Lite를 **메인 모델**로 선택함.
 - 성능은 비교적 떨어지나 제공되는 사용량이 많아 안정적으로 서비스를 제공할 수 있는 Gemma 4 31B를 **폴백 모델**로 선택함.
+- 상세 평가 사항은 [MODEL_BENCHMARK.md](./docs/MODEL_BENCHMARK.md) 참고
 
 ## 사용 라이브러리
 | 라이브러리 | 버전 |│| 라이브러리 | 버전 |
@@ -117,10 +118,10 @@ carrerfit_ai/
   - [x] 채용공고 데이터 수집
   - [x] Pandas 전처리
   - [x] SQLite 저장
-  - [ ] ChromaDB 구축
+  - [x] ChromaDB 구축
 
 - **4일차**
-  - [ ] RAG 검색 기능
+  - [x] RAG 검색 기능
   - [ ] React UI 개발
   - [ ] AI 분석 결과 화면 구현
 

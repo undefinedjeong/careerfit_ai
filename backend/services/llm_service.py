@@ -88,6 +88,7 @@ def get_llm_response(query: str, context_docs: list) -> dict:
 
     
     return performInteraction(client, query, context_docs, sources)
+    # return performInteraction(client, query, context_docs, sources, 2) #llama test용
 
 '''
 fallback_depth
