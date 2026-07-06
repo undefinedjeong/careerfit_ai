@@ -52,8 +52,6 @@ Thumbs.db
 
 # 기타
 
-docs/
-
 .cursor/
 
 *.example
