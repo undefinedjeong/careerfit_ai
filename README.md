@@ -122,8 +122,8 @@ carrerfit_ai/
 
 - **4일차**
   - [x] RAG 검색 기능
-  - [ ] React UI 개발
-  - [ ] AI 분석 결과 화면 구현
+  - [x] React UI 개발
+  - [x] AI 분석 결과 화면 구현
 
 - **5일차**
   - [ ] Docker 배포

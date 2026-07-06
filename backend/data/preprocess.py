@@ -230,16 +230,18 @@ def convert_to_rag_documents(df: pd.DataFrame) -> list:
     documents = []
 
     for _, row in df.iterrows():
-        # 자연어 문서 텍스트 생성
-        doc_text = (
-            f"{row.get('company', '')}에서 {row.get('title', '')}를 채용합니다. "
-            f"필수 스킬은 {row.get('required_skills', '정보 없음')}입니다. "
-            f"우대 스킬: {row.get('preferred_skills', '없음')}. "
-            f"업무 내용: {row.get('description', '정보 없음')}"
-        )
 
         deadline = str(row.get("deadline", "")).replace(".", "-")
         company = str(row.get("company", ""))
+        skills = str(row.get('required_skills', '정보 없음'))
+
+        # 자연어 문서 텍스트 생성
+        doc_text = (
+            f"{company}에서 {row.get('title', '')}를 채용합니다. "
+            f"필수 스킬은 {skills}입니다. "
+            f"우대 스킬: {row.get('preferred_skills', '없음')}. "
+            f"업무 내용: {row.get('description', '정보 없음')}"
+        )
 
         # metadata: 검색 결과를 필터링하거나 출처를 표시할 때 사용합니다
         metadata = {
@@ -251,7 +253,8 @@ def convert_to_rag_documents(df: pd.DataFrame) -> list:
             "source": "jobs.csv",
             "deadline_month": deadline.split('-')[1] if deadline != 'nan' else "",
             "is_startup": "true" if "스타트업" in company else "false",
-            "first_saved_date": date.today().isoformat()
+            "first_saved_date": date.today().isoformat(),
+            "required_skills": skills
         }
 
         documents.append({
