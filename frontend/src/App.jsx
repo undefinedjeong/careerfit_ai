@@ -42,26 +42,37 @@ function App() {
     }
   }
 
-  return (
-    <div className="min-h-screen bg-slate-50 py-10 px-4">
-      <div className="max-w-2xl mx-auto">
-        <h1 className="text-2xl font-bold text-slate-800 mb-2">CareerFit AI</h1>
-        <p className="text-slate-500 text-sm mb-8">취업·공모전 데이터 기반 맞춤형 AI 포트폴리오 코치</p>
+// ... existing code ...
 
+  return (
+    <div className="min-h-screen bg-slate-50 py-12 px-4">
+      <div className="max-w-2xl mx-auto space-y-8">
+        {/* 헤더 섹션 */}
+        <header className="text-center">
+          <h1 className="text-3xl font-extrabold text-slate-900 mb-2">CareerFit AI</h1>
+          <p className="text-slate-600 text-sm">취업·공모전 데이터 기반 맞춤형 AI 포트폴리오 코치</p>
+        </header>
+
+        {/* 메인 폼 */}
         <InputForm onSubmit={handleAnalyze} isLoading={isLoading} />
 
+        {/* 상태 및 결과 영역 */}
         {error && (
-          <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">{error}</div>
+          <div className="p-4 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm text-center">
+            {error}
+          </div>
         )}
 
         {isLoading && (
-          <div className="mt-8 text-center text-slate-500">분석 중입니다...</div>
+          <div className="text-center text-slate-500 py-10">
+            <div className="animate-pulse">분석 중입니다...</div>
+          </div>
         )}
 
         {result && (
-          <div className="mt-8 space-y-4">
+          <div className="space-y-6 animate-in fade-in duration-500">
             <ResultCard answer={result.answer} />
-            {result.sources && result.sources.length > 0 && (
+            {result.sources?.length > 0 && (
               <SourceCard sources={result.sources} />
             )}
           </div>
@@ -70,5 +81,7 @@ function App() {
     </div>
   );
 }
+
+// ... existing code ...
 
 export default App;
