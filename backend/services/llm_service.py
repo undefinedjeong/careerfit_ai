@@ -54,7 +54,7 @@ def get_llm_response(query: str, context_docs: list) -> dict:
     Returns:
         {"answer": str, "sources": list}
     """
-    client = genai.Client()
+    client = genai.Client(api_key = GEMINI_API_KEY) # HOW IT HAVE BEEN WORKED WITHOUT API KEY??
 
     if MOCK_MODE or client == None:
         # mock mode: Gemini API를 호출하지 않고 미리 정의된 응답을 반환한다
@@ -83,6 +83,7 @@ FALLBACK_MODELS = {
     1: os.getenv("FALLBACK_MODEL"),
     2: os.getenv("LOCAL_FALLBACK_MODEL"),
 }
+
 def performInteraction(client, query, context_docs, fallback_depth=0):
     try:
         if fallback_depth <= 1:
