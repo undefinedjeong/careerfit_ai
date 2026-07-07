@@ -42,8 +42,6 @@ function App() {
     }
   }
 
-// ... existing code ...
-
   return (
     <div className="min-h-screen bg-slate-50 py-12 px-4">
       <div className="max-w-2xl mx-auto space-y-8">
@@ -81,7 +79,5 @@ function App() {
     </div>
   );
 }
-
-// ... existing code ...
 
 export default App;
