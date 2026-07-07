@@ -29,11 +29,6 @@ backend/chroma_db/
 
 *.csv
 
-*.db
-
-rag_documents.json
-
-
 
 # 프론트엔드 패키지 폴더 (용량이 매우 크므로 업로드 제외)
 
