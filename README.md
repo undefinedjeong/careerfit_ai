@@ -15,11 +15,7 @@ CareerFit AI는 채용공고 데이터를 분석하여 사용자에게 필요한
 - google.genai에서 제공하는 Interaction 객체 기반 LLM 상호작용
 - 선순위 모델 사용 불가시 자동으로 후순위 모델로 폴백 시도 
 
-### 문제점/의문점:
-
-- 지금 방식으로는 프롬프트 인젝션 공격이 가능하지 않을까? 이걸 해결하려면 어떻게 해야할까?
-
-### 해결된 문제점/의문점:
+### TroubleShooting:
 
 - Frontend의 SourceCard.jsx에 필수 스킬 부분이 출력되지 않음 (해결: DB 수정)
 ```text
@@ -79,7 +75,7 @@ CareerFit AI는 채용공고 데이터를 분석하여 사용자에게 필요한
 ## 프로젝트 구조
 
 ```text
-carrerfit_ai/
+careerfit_ai/
 ├── backend/
 │   ├── data/
 │   │   └── carrerfit.db
@@ -168,3 +164,7 @@ https://127.0.0.1:5173
   - [x] Docker 배포
   - [x] 프로젝트 문서 정리
   - [x] 포트폴리오 완성
+
+## 향후 개선 방안
+
+- 프롬프트 인젝션 방어를 위한 코드 추가

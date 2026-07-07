@@ -7,22 +7,29 @@ BASE_DIR = Path(__file__).parent.parent
 CHROMA_PATH = str(BASE_DIR / "chroma_db")
 RAG_JSON = str(BASE_DIR / "data" / "rag_documents.json")
 
-client = chromadb.PersistentClient(path=CHROMA_PATH)
+# client = chromadb.PersistentClient(path=CHROMA_PATH)
 
+client = chromadb.CloudClient(
+    api_key=os.getenv("CHROMA_API_KEY"),
+    tenant=os.getenv("CHROMA_TENANT"),
+    database=os.getenv("CHROMA_DATABASE")
+)
 
 def get_or_create_collection() -> chromadb.Collection:
     """
     ChromaDB 컬렉션을 가져오거나, 비어있으면 RAG 문서를 로드합니다.
     요리 비유: 레시피 북을 열고, 비어있으면 레시피 카드를 채워넣습니다.
     """
-    collection = client.get_or_create_collection(
-        name="careerfit_jobs",
-        metadata={"description": "CareerFit AI 취업·공모전 데이터"}
-    )
+    # collection = client.get_or_create_collection(
+    #     name="careerfit_jobs",
+    #     metadata={"description": "CareerFit AI 취업·공모전 데이터"}
+    # )
 
-    if collection.count() == 0:
-        print("⚠️  ChromaDB가 비어있습니다. RAG 문서를 다시 저장합니다...")
-        _load_documents(collection)
+    collection = client.get_collection(name="jobs")
+
+    # if collection.count() == 0:
+    #     print("⚠️  ChromaDB가 비어있습니다. RAG 문서를 다시 저장합니다...")
+    #     _load_documents(collection)
 
     return collection
 
