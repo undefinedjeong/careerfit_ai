@@ -22,20 +22,20 @@ CareerFit AI는 채용공고 데이터를 분석하여 사용자에게 필요한
 ### TroubleShooting:
 
 - Frontend의 SourceCard.jsx에 필수 스킬 부분이 출력되지 않음 (해결: DB 수정)
-```text
+``` text
 문제: chromadb 생성시 metadata 내에 required_skills가 포함되지 않음.
 
 해결: preprocess.py에서 json 생성시 metadata 내에 required_skills 포함하게 수정한 후, chromadb 재생성
 ```
 
 - render에서 appuser의 권한 설정 오류(해결: 권한 변경)
-```
+``` text
 문제: appuser의 홈 디렉토리가 /nonexistent로 설정되어 chromaDB 캐시 생성 중 권한 오류가 발생.
 해결: appuser의 홈 디렉토리를 /app으로 변경
 ```
 
 - 데이터가 github에 노출됨(해결: 클라우드)
-```
+``` text
 문제: rag_documents.json이 github에 노출됨
 해결: chromaDB에서 제공하는 클라우드에 DB를 업로드하고 API로 DB를 받아옴으로써 데이터 노출 최소화
 ```
@@ -84,7 +84,7 @@ CareerFit AI는 채용공고 데이터를 분석하여 사용자에게 필요한
 
 ## 프로젝트 구조
 
-```text
+``` text
 careerfit_ai/
 ├── backend/
 │   ├── data/
@@ -129,23 +129,23 @@ careerfit_ai/
 
 ## 사용법
 ### 백엔드 서버(로컬)
-```bash
+``` bash
 cd backend
 venv\Scripts\Activate.ps1 # venv 실행
 uvicorn main:app --reload --port 8000
 ```
-```
+``` text
 http://127.0.0.1:8000
 http://127.0.0.1:8000/docs
 ```
 ### 백엔드 서버(배포)
-```
+``` text
 https://careerfit-ai-lmxn.onrender.com/
 https://careerfit-ai-lmxn.onrender.com/docs
 ```
 
 ### 프론트엔드 서버(로컬)
-```bash
+``` bash
 npm run dev
 ```
 ```
@@ -153,7 +153,7 @@ http://127.0.0.1:5173
 ```
 
 ### 프론트엔드 서버(배포)
-```
+``` text
 https://careerfit-ai-frontend-oz8z.onrender.com/
 ```
 
@@ -185,7 +185,7 @@ results = collection.query(
 ```
 
 ### Google Genai (Interaction) 사용법
-```Python
+``` Python
 #클라이언트 객체 생성
 client = genai.Client(api_key = GEMINI_API_KEY)
 
