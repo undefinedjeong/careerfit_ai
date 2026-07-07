@@ -2,6 +2,8 @@
 
 > 취업·공모전 데이터를 기반으로 개인 맞춤형 포트폴리오와 역량 향상 방향을 제안하는 AI 코치
 
+URL: https://careerfit-ai-frontend-oz8z.onrender.com/
+
 
 ## 프로젝트 개요
 
@@ -125,7 +127,7 @@ careerfit_ai/
 5. LLM 텍스트 생성 과정에서 사용량 초과 오류 발생시 폴백 모델을 사용하여 다시 시도한다. 폴백 모델 사용량까지 초과하였다면 로컬 모델을 사용하여 답변한다.
 
 ## 사용법
-### 백엔드 서버
+### 백엔드 서버(로컬)
 ```bash
 cd backend
 venv\Scripts\Activate.ps1 # venv 실행
@@ -135,13 +137,23 @@ uvicorn main:app --reload --port 8000
 http://127.0.0.1:8000
 http://127.0.0.1:8000/docs
 ```
+### 백엔드 서버(배포)
+```
+https://careerfit-ai-lmxn.onrender.com/
+https://careerfit-ai-lmxn.onrender.com/docs
+```
 
-### 프론트엔드 서버
+### 프론트엔드 서버(로컬)
 ```bash
 npm run dev
 ```
 ```
 http://127.0.0.1:5173
+```
+
+### 프론트엔드 서버(배포)
+```
+https://careerfit-ai-frontend-oz8z.onrender.com/
 ```
 
 ### ChromaDB 접근법
