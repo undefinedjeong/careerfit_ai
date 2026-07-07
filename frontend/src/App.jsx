@@ -3,8 +3,7 @@ import InputForm from "./components/InputForm";
 import ResultCard from "./components/ResultCard";
 import SourceCard from "./components/SourceCard";
 
-const API_BASE = "http://localhost:8000";
-// ⚠️ API Key는 절대 여기에 넣지 않습니다
+const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
 function App() {
   const [result, setResult] = useState(null);
