@@ -14,6 +14,7 @@ CareerFit AI는 채용공고 데이터를 분석하여 사용자에게 필요한
 - 비교적 최적화된 LLM 모델 사용
 - google.genai에서 제공하는 Interaction 객체 기반 LLM 상호작용
 - 선순위 모델 사용 불가시 자동으로 후순위 모델로 폴백 시도 
+- ChromaDB를 클라우드화 하여 데이터 노출 최소화
 
 ### TroubleShooting:
 
@@ -28,6 +29,12 @@ CareerFit AI는 채용공고 데이터를 분석하여 사용자에게 필요한
 ```
 문제: appuser의 홈 디렉토리가 /nonexistent로 설정되어 chromaDB 캐시 생성 중 권한 오류가 발생.
 해결: appuser의 홈 디렉토리를 /app으로 변경
+```
+
+- 데이터가 github에 노출됨(해결: 클라우드)
+```
+문제: rag_documents.json이 github에 노출됨
+해결: chromaDB에서 제공하는 클라우드에 DB를 업로드하고 API로 DB를 받아옴으로써 데이터 노출 최소화
 ```
 
 ## 기술 스택
@@ -78,9 +85,9 @@ CareerFit AI는 채용공고 데이터를 분석하여 사용자에게 필요한
 careerfit_ai/
 ├── backend/
 │   ├── data/
-│   │   └── carrerfit.db
+│   │   └── careerfit.db (ignored)
 │   ├── routers/
-│   │   ├── analayze.py
+│   │   ├── analyze.py
 │   │   ├── health.py
 │   │   └── jobs.py
 │   ├── services/
@@ -125,8 +132,8 @@ venv\Scripts\Activate.ps1 # venv 실행
 uvicorn main:app --reload --port 8000
 ```
 ```
-https://127.0.0.1:8000
-https://127.0.0.1:8000/docs
+http://127.0.0.1:8000
+http://127.0.0.1:8000/docs
 ```
 
 ### 프론트엔드 서버
@@ -134,7 +141,52 @@ https://127.0.0.1:8000/docs
 npm run dev
 ```
 ```
-https://127.0.0.1:5173
+http://127.0.0.1:5173
+```
+
+### ChromaDB 접근법
+```Python
+#ChromaDB Client 객체 생성
+client = chromadb.CloudClient(              
+    api_key=os.getenv("CHROMA_API_KEY"),
+    tenant=os.getenv("CHROMA_TENANT"),
+    database=os.getenv("CHROMA_DATABASE")
+)
+
+#DB 내 콜렉션 선택
+collection = client.get_collection(name="jobs")
+
+#콜렉션 내 데이터 추가
+collection.add(
+    documents=[doc["text"] for doc in documents],
+    metadatas=[doc["metadata"] for doc in documents],
+    ids=[doc["doc_id"] for doc in documents]
+)
+
+#콜렉션 내 데이터 검색
+results = collection.query(
+    query_texts=[query],
+    n_results=min(n_results, collection.count()),
+    where= where_filter
+)
+```
+
+### Google Genai (Interaction) 사용법
+```Python
+#클라이언트 객체 생성
+client = genai.Client(api_key = GEMINI_API_KEY)
+
+#인터랙션 생성
+interaction = client.interactions.create(
+    model = FALLBACK_MODELS[fallback_depth],
+    input = build_rag_prompt(query, context_docs)
+)
+
+#인터랙션 반환값 출력
+return {
+    "answer": interaction.output_text,
+    "sources": sources
+}
 ```
 ## 진행 현황
 
