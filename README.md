@@ -7,7 +7,7 @@
 
 취업을 준비하는 과정에서 어떤 경험과 역량을 쌓아야 하는지 판단하기는 쉽지 않습니다.
 
-CareerFit AI는 채용공고와 공모전 데이터를 분석하여 사용자에게 필요한 역량과 포트폴리오 방향을 AI가 제안하는 프로젝트입니다.
+CareerFit AI는 채용공고 데이터를 분석하여 사용자에게 필요한 역량과 포트폴리오 방향을 AI가 제안하는 프로젝트입니다.
 
 ### 어떤 부분이 다른가?
 
@@ -26,6 +26,12 @@ CareerFit AI는 채용공고와 공모전 데이터를 분석하여 사용자에
 문제: chromadb 생성시 metadata 내에 required_skills가 포함되지 않음.
 
 해결: preprocess.py에서 json 생성시 metadata 내에 required_skills 포함하게 수정한 후, chromadb 재생성
+```
+
+- render에서 appuser의 권한 설정 오류(해결: 권한 변경)
+```
+문제: appuser의 홈 디렉토리가 /nonexistent로 설정되어 chromaDB 캐시 생성 중 권한 오류가 발생.
+해결: appuser의 홈 디렉토리를 /app으로 변경
 ```
 
 ## 기술 스택
@@ -86,6 +92,7 @@ carrerfit_ai/
 │   │   └── llm_service.py
 │   ├── main.py
 │   ├── .env (ignored)
+│   ├── DOCKERFILE
 │   └── requirements.txt
 ├── frontend/
 │   ├── src
@@ -95,6 +102,7 @@ carrerfit_ai/
 │   ├── App.css
 │   ├── App.jsx
 │   ├── index.css
+│   ├── DOCKERFILE
 │   └── main.jsx
 ├── data/
 ├── docs/
@@ -157,6 +165,6 @@ https://127.0.0.1:5173
   - [x] AI 분석 결과 화면 구현
 
 - **5일차**
-  - [ ] Docker 배포
-  - [ ] 프로젝트 문서 정리
-  - [ ] 포트폴리오 완성
+  - [x] Docker 배포
+  - [x] 프로젝트 문서 정리
+  - [x] 포트폴리오 완성

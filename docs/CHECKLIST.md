@@ -96,18 +96,18 @@
 
 ## 5일차
 
-- [ ] Dockerfile 작성 완료
+- [x] Dockerfile 작성 완료
 
-- [ ] Docker build 성공
+- [x] Docker build 성공
 
-- [ ] Docker run 후 /health 접속 확인
+- [x] Docker run 후 /health 접속 확인
 
-- [ ] README 최종화 완료 (문제정의·데이터·구현·검증 4단계)
+- [x] README 최종화 완료 (문제정의·데이터·구현·검증 4단계)
 
-- [ ] .env 미포함 보안 확인
+- [x] .env 미포함 보안 확인
 
-- [ ] 최종 하네스 파일 업데이트 완료
+- [x] 최종 하네스 파일 업데이트 완료
 
-- [ ] GitHub 최종 커밋 완료
+- [x] GitHub 최종 커밋 완료
 
-- [ ] 팀 리플렉션 발표 준비 완료
+- [x] 팀 리플렉션 발표 준비 완료
