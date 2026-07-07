@@ -4,6 +4,7 @@
 
 URL: https://careerfit-ai-frontend-oz8z.onrender.com/
 
+\* 백엔드 서버 부팅에 시간이 걸려 1분 내외로 시간 소요될 수 있음(이미 부팅된 경우 10초 이내)
 
 ## 프로젝트 개요
 
